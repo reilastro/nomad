@@ -24,32 +24,10 @@ try:
 except:
     NOMPL=True
 
-def benchmark():
-    N = 5000
-
-    A = np.random.rand(N, N)
-    B = np.random.rand(N, N)
-    C = np.zeros([N, N], dtype=float)
-
-    t = time.clock()
-    weave_inline_loop(A, B, C, N)
-    print time.clock() - t
-
-
-def weave_inline_loop(A, B, C, N):
-    code = """
-           int i, j;
-           for (i = 0; i < N; ++i)
-           {
-               for (j = 0; j < N; ++j)
-               {
-                   C(i, j) = A(i, j) * B(i, j);
-               }
-           }
-           """
-    weave.inline(code, ['A', 'B', 'C', 'N'], type_converters=converters.blitz, compiler='gcc')
-
 class nomad():
+    """
+    A class for loading star information from NOMAD catalog
+    """
     def __init__(self,location=DEFAULT_DIR):
         self.all_cat=None     # A list of all catalog files
         self.record_size=22   # 22 integers in catalog file
@@ -416,6 +394,9 @@ class nomad():
             return self.data
 
     def plot(self,**kwargs):
+        if NOMPL:
+            print "No matplotlib"
+            return
         if self.data==None: 
             print "No data loaded"
             return
