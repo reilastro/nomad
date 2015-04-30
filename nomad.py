@@ -2,6 +2,7 @@
 
 import os
 import sys
+DEFAULT_DIR="/nomad/"
 
 import math
 R2D=180.0/math.pi
@@ -49,7 +50,7 @@ def weave_inline_loop(A, B, C, N):
     weave.inline(code, ['A', 'B', 'C', 'N'], type_converters=converters.blitz, compiler='gcc')
 
 class nomad():
-    def __init__(self,location):
+    def __init__(self,location=DEFAULT_DIR):
         self.all_cat=None     # A list of all catalog files
         self.record_size=22   # 22 integers in catalog file
         self.byte_size=4      # "i4" specifically
